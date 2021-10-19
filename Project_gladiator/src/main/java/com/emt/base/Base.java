@@ -16,6 +16,10 @@ public class Base {
 
 	public static WebDriver driver;
 	public static Properties prop;
+	static TestUtil utliclass;
+	public void setup() {
+		utliclass = new TestUtil();
+	}
 
 	public Base() {
 		try {
@@ -47,8 +51,13 @@ public class Base {
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().pageLoadTimeout(TestUtil.PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
 		driver.manage().timeouts().implicitlyWait(TestUtil.PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
-		
 		driver.get(prop.getProperty("url"));
+		try {
+			utliclass.Alert1();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

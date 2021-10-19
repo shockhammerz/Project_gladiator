@@ -1,7 +1,8 @@
 package com.emt.pages;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.concurrent.TimeUnit;
-import static org.junit.Assert.*;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -22,6 +23,8 @@ public class RegistrationPage extends Base {
 		@CacheLookup
 		@FindBy(id="txtEmail") WebElement EmailorPhone;
 		@CacheLookup
+		@FindBy(id="RegValidPhone") WebElement InvalidText;
+		@CacheLookup
 		@FindBy(id="shwotp") WebElement ContinueButn;
 		@CacheLookup
 		@FindBy(id="shwlgnOTP") WebElement GetOTP;
@@ -38,7 +41,7 @@ public class RegistrationPage extends Base {
 		}
 		
 		//Actions
-		public void register(String EPhone,String OTP) throws Exception {
+		public void registrationWithValidCredentials(String EPhone) throws Exception {
 			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 			Actions action = new Actions(driver);
 			action.moveToElement(Myaccount).perform();
@@ -46,11 +49,21 @@ public class RegistrationPage extends Base {
 			EmailorPhone.sendKeys(EPhone);
 			ContinueButn.click();
 			Thread.sleep(10000);
-			//EnterOTP.sendKeys(OTP); //Entering otp manually
-			Actions action1 = new Actions(driver);
-			action1.moveToElement(CreateMyAccount).perform();
-			String ActualURL = driver.getCurrentUrl();
-			assertEquals("URL verified",prop.getProperty("url"), ActualURL);
+			//Entering otp manually
+			Actions action2 = new Actions(driver);
+			action2.moveToElement(CreateMyAccount).perform();
+			Thread.sleep(10000);
 			
+		}
+		public void registrationWithInalidCredentials(String EPhone) throws Exception {
+			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+			Actions action = new Actions(driver);
+			action.moveToElement(Myaccount).perform();
+			login.click();
+			EmailorPhone.sendKeys(EPhone);
+			//Thread.sleep(10000);
+			ContinueButn.click();
+			//Thread.sleep(4000);
+			assertEquals("* Enter a valid Phone Number", InvalidText.getText());
 		}
 	}

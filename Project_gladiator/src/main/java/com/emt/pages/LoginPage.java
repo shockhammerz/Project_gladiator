@@ -16,6 +16,8 @@ public class LoginPage extends Base {
 	
 	//PageFactory
 	@CacheLookup
+	@FindBy(className="newHeaderLogo") WebElement EMTlogo;
+	@CacheLookup
 	@FindBy(id="spnMyAcc") WebElement Myaccount;
 	@CacheLookup
 	@FindBy(id="shwlogn") WebElement login;
@@ -38,7 +40,15 @@ public class LoginPage extends Base {
 	}
 	
 	//Actions
-	public void login(String EPhone, String Pass) {
+	public String validateLoginpageTitle() {
+		return driver.getTitle();
+	}
+	
+	public boolean validateEMTLogo() {
+		return EMTlogo.isDisplayed();		
+	}
+
+	public void loginWithValidCredentials(String EPhone, String Pass) {
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		Actions action = new Actions(driver);
 		action.moveToElement(Myaccount).perform();
@@ -49,7 +59,7 @@ public class LoginPage extends Base {
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		LoginBtn.click();
 	}
-	public void invalidlogin(String Ephone) {
+	public void loginWithInValidCredentials(String Ephone) {
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		Actions action = new Actions(driver);
 		action.moveToElement(Myaccount).perform();
@@ -57,6 +67,5 @@ public class LoginPage extends Base {
 		EmailorPhone.sendKeys(Ephone);
 		ContinueButn.click();
 		assertEquals("* Enter a valid Email", InvalidString.getText());
-		
 	}
 }
